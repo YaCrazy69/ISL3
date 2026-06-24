@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Projectile Simulator",
+    "slug": "projectile-simulator",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0B1120"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1120"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
