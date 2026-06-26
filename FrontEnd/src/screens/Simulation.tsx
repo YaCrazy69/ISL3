@@ -3,32 +3,40 @@
  * Expose tous les paramètres numériques et le sélecteur de méthode.
  * La logique d'état et de validation est entièrement déléguée à `useSimulationForm`.
  */
-import { StyleSheet, Text, View } from "react-native"
-import { Button } from "@/components/Button"
-import { MethodSelector } from "@/components/MethodSelector"
-import { NumericInput } from "@/components/NumericInput"
-import { Screen } from "@/components/Screen"
+import { Alert, StyleSheet, Text, View } from "react-native"
+import { Bouton } from "@/components/Bouton"
+import { EntreeNumerique } from "@/components/EntreeNumerique"
+import { Ecran } from "@/components/Ecran"
 import { FIELD_CONFIGS } from "@/constants/simulation"
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING } from "@/constants/theme"
-import { useSimulationForm } from "@/hooks/useSimulationForm"
-import { computeSimulation } from "@/utils/mockEngine"
+import { useSimulationForm } from "@/hooks/useFormulaireSimulation"
+import { simulate } from "@/services/api"
 import type { AppScreenProps } from "@/types/navigation"
 
-export function SimulationScreen({ navigation }: AppScreenProps<"Simulation">) {
-  const { values, method, errors, setField, setMethod, touchField, validateAll, buildParams } =
+export function Simulation({ navigation }: AppScreenProps<"Simulation">) {
+  const { values, errors, setField, touchField, validateAll, buildParams } =
     useSimulationForm()
 
-  function handleSimulate() {
+  async function handleSimulate() {
     const valid = validateAll()
     if (!valid) return
 
     const params = buildParams()
-    const result = computeSimulation(params)
-    navigation.navigate("Result", { params, result })
+
+    try {
+      const result = await simulate(params)
+      navigation.navigate("Resultat", { params, result })
+    } catch (error) {
+      console.error("Simulation error", error)
+      Alert.alert(
+        "Erreur",
+        "Impossible d'exécuter la simulation. Vérifiez que le backend FastAPI est bien lancé.",
+      )
+    }
   }
 
   return (
-    <Screen scroll contentStyle={styles.content}>
+    <Ecran scroll contentStyle={styles.content}>
       {/* Titre */}
       <View style={styles.header}>
         <Text style={styles.title}>Nouvelle Simulation</Text>
@@ -39,7 +47,7 @@ export function SimulationScreen({ navigation }: AppScreenProps<"Simulation">) {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Paramètres physiques</Text>
         {FIELD_CONFIGS.map((config) => (
-          <NumericInput
+          <EntreeNumerique
             key={config.key}
             label={config.label}
             unit={config.unit}
@@ -52,22 +60,22 @@ export function SimulationScreen({ navigation }: AppScreenProps<"Simulation">) {
         ))}
       </View>
 
-      {/* Sélecteur de méthode d'intégration */}
+      {/* Méthode d'intégration fixe */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Méthode numérique</Text>
-        <MethodSelector value={method} onChange={setMethod} />
+        <Text style={styles.methodLabel}>Runge-Kutta 4</Text>
       </View>
 
       {/* Bouton de lancement */}
       <View style={styles.actions}>
-        <Button label="Simuler" onPress={handleSimulate} />
-        <Button
+        <Bouton label="Simuler" onPress={handleSimulate} />
+        <Bouton
           label="Annuler"
           variant="ghost"
           onPress={() => navigation.goBack()}
         />
       </View>
-    </Screen>
+    </Ecran>
   )
 }
 
@@ -87,6 +95,11 @@ const styles = StyleSheet.create({
   subtitle: {
     color: COLORS.textMuted,
     fontSize: FONT_SIZE.sm,
+  },
+  methodLabel: {
+    color: COLORS.text,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: FONT_WEIGHT.semibold,
   },
   section: {
     marginBottom: SPACING.lg,

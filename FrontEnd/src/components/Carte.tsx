@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const Card = memo(CardComponent)
+export const Carte = memo(CardComponent)

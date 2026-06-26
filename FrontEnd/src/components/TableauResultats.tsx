@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const ResultsTable = memo(ResultsTableComponent)
+export const TableauResultats = memo(ResultsTableComponent)

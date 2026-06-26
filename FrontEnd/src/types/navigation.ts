@@ -10,13 +10,12 @@ import type { SimulationParams, SimulationResult } from "@/types"
  * `undefined` signifie que la route n'attend aucun paramètre.
  */
 export type RootStackParamList = {
-  Home: undefined
+  Accueil: undefined
   Simulation: undefined
-  Result: {
+  Resultat: {
     params: SimulationParams
     result: SimulationResult
   }
-  History: undefined
 }
 
 /** Helper de typage des props d'écran pour une route donnée. */

@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.85 },
 })
 
-export const Button = memo(ButtonComponent)
+export const Bouton = memo(ButtonComponent)

@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const Screen = memo(ScreenComponent)
+export const Ecran = memo(ScreenComponent)

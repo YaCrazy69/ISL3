@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const MetricCard = memo(MetricCardComponent)
+export const CarteMetrique = memo(MetricCardComponent)

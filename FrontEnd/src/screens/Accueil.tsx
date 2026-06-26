@@ -1,16 +1,16 @@
 /**
- * Écran d'accueil : logo et actions principales (nouvelle simulation, historique).
+ * Écran d'accueil : logo et action principale pour démarrer une simulation.
  */
 import { StyleSheet, Text, View } from "react-native"
-import { Button } from "@/components/Button"
+import { Bouton } from "@/components/Bouton"
 import { Logo } from "@/components/Logo"
-import { Screen } from "@/components/Screen"
+import { Ecran } from "@/components/Ecran"
 import { COLORS, FONT_SIZE, SPACING } from "@/constants/theme"
 import type { AppScreenProps } from "@/types/navigation"
 
-export function HomeScreen({ navigation }: AppScreenProps<"Home">) {
+export function Accueil({ navigation }: AppScreenProps<"Accueil">) {
   return (
-    <Screen contentStyle={styles.content}>
+    <Ecran contentStyle={styles.content}>
       <View style={styles.header}>
         <Logo size={120} />
         <Text style={styles.tagline}>
@@ -20,16 +20,11 @@ export function HomeScreen({ navigation }: AppScreenProps<"Home">) {
       </View>
 
       <View style={styles.actions}>
-        <Button label="Nouvelle Simulation" onPress={() => navigation.navigate("Simulation")} />
-        <Button
-          label="Historique"
-          variant="secondary"
-          onPress={() => navigation.navigate("History")}
-        />
+        <Bouton label="Nouvelle Simulation" onPress={() => navigation.navigate("Simulation")} />
       </View>
 
-      <Text style={styles.footer}>Euler · Point Milieu · Runge-Kutta 4</Text>
-    </Screen>
+      <Text style={styles.footer}>Runge-Kutta 4</Text>
+    </Ecran>
   )
 }
 

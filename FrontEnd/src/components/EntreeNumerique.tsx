@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const NumericInput = memo(NumericInputComponent)
+export const EntreeNumerique = memo(NumericInputComponent)

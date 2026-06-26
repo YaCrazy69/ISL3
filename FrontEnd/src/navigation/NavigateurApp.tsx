@@ -4,10 +4,9 @@
  */
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { HistoryScreen } from "@/screens/HistoryScreen"
-import { HomeScreen } from "@/screens/HomeScreen"
-import { ResultScreen } from "@/screens/ResultScreen"
-import { SimulationScreen } from "@/screens/SimulationScreen"
+import { Accueil } from "@/screens/Accueil"
+import { Resultat } from "@/screens/Resultat"
+import { Simulation } from "@/screens/Simulation"
 import { COLORS, FONT_SIZE, FONT_WEIGHT } from "@/constants/theme"
 import type { RootStackParamList } from "@/types/navigation"
 
@@ -26,39 +25,30 @@ const sharedHeaderOptions = {
   headerBackTitle: "Retour",
 } as const
 
-export function AppNavigator() {
+export function NavigateurApp() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Accueil"
         screenOptions={sharedHeaderOptions}
       >
         {/* Écran d'accueil : pas d'en-tête (logo intégré dans le contenu) */}
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Accueil"
+          component={Accueil}
           options={{ headerShown: false }}
         />
 
-        {/* Formulaire de simulation */}
         <Stack.Screen
           name="Simulation"
-          component={SimulationScreen}
+          component={Simulation}
           options={{ title: "Simulation" }}
         />
 
-        {/* Résultats */}
         <Stack.Screen
-          name="Result"
-          component={ResultScreen}
+          name="Resultat"
+          component={Resultat}
           options={{ title: "Résultats" }}
-        />
-
-        {/* Historique */}
-        <Stack.Screen
-          name="History"
-          component={HistoryScreen}
-          options={{ title: "Historique" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const MethodSelector = memo(MethodSelectorComponent)
+export const SelecteurMethode = memo(MethodSelectorComponent)

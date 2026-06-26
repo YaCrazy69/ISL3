@@ -4,23 +4,21 @@
  * Permet de sauvegarder, relancer une simulation ou comparer (stub).
  */
 import { Alert, StyleSheet, Text, useWindowDimensions, View } from "react-native"
-import { Card } from "@/components/Card"
-import { Button } from "@/components/Button"
-import { MetricCard } from "@/components/MetricCard"
-import { ResultsTable } from "@/components/ResultsTable"
-import { Screen } from "@/components/Screen"
-import { TrajectoryChart } from "@/components/TrajectoryChart"
+import { Carte } from "@/components/Carte"
+import { Bouton } from "@/components/Bouton"
+import { CarteMetrique } from "@/components/CarteMetrique"
+import { TableauResultats } from "@/components/TableauResultats"
+import { Ecran } from "@/components/Ecran"
+import { GraphiqueTrajectoire } from "@/components/GraphiqueTrajectoire"
 import { METHOD_LABELS } from "@/constants/simulation"
 import { COLORS, FONT_SIZE, FONT_WEIGHT, SPACING } from "@/constants/theme"
-import { useHistory } from "@/hooks/useHistory"
-import { formatNumber, generateId } from "@/utils/format"
-import { sampleTrajectory } from "@/utils/mockEngine"
+import { formatNumber } from "@/utils/format"
+import { sampleTrajectory } from "@/utils/trajectoire"
 import type { AppScreenProps } from "@/types/navigation"
 
-export function ResultScreen({ navigation, route }: AppScreenProps<"Result">) {
+export function Resultat({ navigation, route }: AppScreenProps<"Resultat">) {
   const { params, result } = route.params
   const { metrics, trajectory } = result
-  const { save } = useHistory()
   const { width } = useWindowDimensions()
 
   // Largeur disponible pour le graphe (écran moins les paddings).
@@ -29,23 +27,12 @@ export function ResultScreen({ navigation, route }: AppScreenProps<"Result">) {
   // Sous-échantillonnage pour ne pas surcharger le rendu SVG et le tableau.
   const sampledTrajectory = sampleTrajectory(trajectory, 60)
 
-  async function handleSave() {
-    await save({
-      id: generateId(),
-      createdAt: new Date().toISOString(),
-      params,
-      result,
-    })
-    Alert.alert("Sauvegardé", "La simulation a été ajoutée à l'historique.")
-  }
-
   function handleCompare() {
-    // Stub : fonctionnalité à implémenter dans une prochaine itération.
     Alert.alert("Comparer", "La comparaison de simulations sera disponible prochainement.")
   }
 
   return (
-    <Screen scroll contentStyle={styles.content}>
+    <Ecran scroll contentStyle={styles.content}>
       {/* En-tête */}
       <View style={styles.header}>
         <Text style={styles.title}>Résultats</Text>
@@ -53,61 +40,60 @@ export function ResultScreen({ navigation, route }: AppScreenProps<"Result">) {
       </View>
 
       {/* Métriques clés */}
-      <Card style={styles.metricsCard}>
+      <Carte style={styles.metricsCard}>
         <Text style={styles.sectionTitle}>Indicateurs clés</Text>
         <View style={styles.metricsGrid}>
-          <MetricCard
+          <CarteMetrique
             label="Hauteur max"
             value={formatNumber(metrics.maxHeight, 2)}
             unit="m"
           />
-          <MetricCard
+          <CarteMetrique
             label="Portée"
             value={formatNumber(metrics.range, 2)}
             unit="m"
           />
-          <MetricCard
+          <CarteMetrique
             label="Temps de vol"
             value={formatNumber(metrics.flightTime, 2)}
             unit="s"
           />
-          <MetricCard
+          <CarteMetrique
             label="Itérations"
             value={String(metrics.iterations)}
           />
         </View>
-      </Card>
+      </Carte>
 
       {/* Graphique SVG de la trajectoire */}
-      <Card style={styles.chartCard}>
+      <Carte style={styles.chartCard}>
         <Text style={styles.sectionTitle}>Trajectoire</Text>
-        <TrajectoryChart
+        <GraphiqueTrajectoire
           trajectory={sampledTrajectory}
           height={220}
           width={Math.max(chartWidth, 260)}
         />
-      </Card>
+      </Carte>
 
       {/* Tableau des points */}
-      <Card style={styles.tableCard}>
+      <Carte style={styles.tableCard}>
         <Text style={styles.sectionTitle}>Points de trajectoire</Text>
         <Text style={styles.tableHint}>
           {sampledTrajectory.length} points affichés sur {trajectory.length}
         </Text>
-        <ResultsTable points={sampledTrajectory} maxHeight={280} />
-      </Card>
+        <TableauResultats points={sampledTrajectory} maxHeight={280} />
+      </Carte>
 
       {/* Actions */}
       <View style={styles.actions}>
-        <Button label="Sauvegarder" onPress={() => { void handleSave() }} />
-        <Button
+        <Bouton
           label="Nouvelle Simulation"
           variant="secondary"
           onPress={() => navigation.navigate("Simulation")}
         />
-        <Button label="Comparer" variant="ghost" onPress={handleCompare} />
+        <Bouton label="Comparer" variant="ghost" onPress={handleCompare} />
       </View>
-    </Screen>
+    </Ecran>
   )
 }
 

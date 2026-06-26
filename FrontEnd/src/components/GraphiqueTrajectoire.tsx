@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export const TrajectoryChart = memo(TrajectoryChartComponent)
+export const GraphiqueTrajectoire = memo(TrajectoryChartComponent)

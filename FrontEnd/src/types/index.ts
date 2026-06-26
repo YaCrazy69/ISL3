@@ -4,7 +4,7 @@
  */
 
 /** Méthodes d'intégration numérique disponibles. */
-export type IntegrationMethod = "euler" | "midpoint" | "rk4"
+export type IntegrationMethod = "rk4"
 
 /**
  * Paramètres d'entrée d'une simulation.
@@ -59,21 +59,6 @@ export interface SimulationMetrics {
 export interface SimulationResult {
   metrics: SimulationMetrics
   trajectory: TrajectoryPoint[]
-}
-
-/**
- * Enregistrement persistant d'une simulation dans l'historique.
- * Contient les paramètres, le résultat et des métadonnées.
- */
-export interface SimulationRecord {
-  /** Identifiant unique */
-  id: string
-  /** Date de création (ISO 8601) */
-  createdAt: string
-  /** Paramètres utilisés */
-  params: SimulationParams
-  /** Résultat calculé */
-  result: SimulationResult
 }
 
 /** Représente les erreurs de validation d'un formulaire. */

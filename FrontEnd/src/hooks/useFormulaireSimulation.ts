@@ -5,7 +5,7 @@
 import { useCallback, useMemo, useState } from "react"
 import { DEFAULT_PARAMS, FIELD_CONFIGS, type NumericField } from "@/constants/simulation"
 import { isFormValid, parseNumeric, type RawFormValues, validateForm } from "@/utils/validation"
-import type { IntegrationMethod, SimulationParams, ValidationErrors } from "@/types"
+import type { SimulationParams, ValidationErrors } from "@/types"
 
 /** Construit les valeurs brutes initiales (chaînes) à partir des paramètres par défaut. */
 function buildInitialValues(): RawFormValues {
@@ -19,21 +19,17 @@ function buildInitialValues(): RawFormValues {
 export interface UseSimulationFormResult {
   /** Valeurs brutes saisies (chaînes) */
   values: RawFormValues
-  /** Méthode d'intégration sélectionnée */
-  method: IntegrationMethod
   /** Erreurs de validation affichées (champs déjà "touchés") */
   errors: ValidationErrors<RawFormValues>
   /** Met à jour la valeur d'un champ */
   setField: (field: NumericField, value: string) => void
-  /** Sélectionne la méthode d'intégration */
-  setMethod: (method: IntegrationMethod) => void
   /** Marque un champ comme touché (déclenche l'affichage de son erreur) */
   touchField: (field: NumericField) => void
   /** Valide tout le formulaire et marque tous les champs comme touchés */
   validateAll: () => boolean
   /** Réinitialise le formulaire aux valeurs par défaut */
   reset: () => void
-  /** Construit l'objet `SimulationParams` typé (à appeler après validation) */
+  /** Réinitialise l'objet `SimulationParams` typé (à appeler après validation) */
   buildParams: () => SimulationParams
 }
 
@@ -42,7 +38,6 @@ export interface UseSimulationFormResult {
  */
 export function useSimulationForm(): UseSimulationFormResult {
   const [values, setValues] = useState<RawFormValues>(buildInitialValues)
-  const [method, setMethod] = useState<IntegrationMethod>(DEFAULT_PARAMS.method)
   const [touched, setTouched] = useState<Partial<Record<NumericField, boolean>>>({})
 
   // Erreurs calculées sur l'ensemble du formulaire.
@@ -79,7 +74,6 @@ export function useSimulationForm(): UseSimulationFormResult {
 
   const reset = useCallback(() => {
     setValues(buildInitialValues())
-    setMethod(DEFAULT_PARAMS.method)
     setTouched({})
   }, [])
 
@@ -92,16 +86,14 @@ export function useSimulationForm(): UseSimulationFormResult {
       mass: parseNumeric(values.mass),
       dragCoefficient: parseNumeric(values.dragCoefficient),
       initialHeight: parseNumeric(values.initialHeight),
-      method,
+      method: DEFAULT_PARAMS.method,
     }
-  }, [values, method])
+  }, [values])
 
   return {
     values,
-    method,
     errors,
     setField,
-    setMethod,
     touchField,
     validateAll,
     reset,

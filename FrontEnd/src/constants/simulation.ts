@@ -101,18 +101,12 @@ export const FIELD_CONFIGS: FieldConfig[] = [
 ]
 
 /** Options du sélecteur de méthode d'intégration numérique. */
-export const METHOD_OPTIONS: { value: IntegrationMethod; label: string; short: string }[] = [
-  { value: "euler", label: "Euler", short: "Euler" },
-  { value: "midpoint", label: "Point Milieu", short: "Milieu" },
-  { value: "rk4", label: "Runge-Kutta 4", short: "RK4" },
+export const METHOD_OPTIONS: Array<{ value: IntegrationMethod; label: string }> = [
+  { value: "rk4", label: "Runge-Kutta 4" },
 ]
 
 /** Libellé lisible d'une méthode pour l'affichage. */
 export const METHOD_LABELS: Record<IntegrationMethod, string> = {
-  euler: "Euler",
-  midpoint: "Point Milieu",
   rk4: "Runge-Kutta 4",
 }
 
-/** Clé de stockage AsyncStorage pour l'historique des simulations. */
-export const STORAGE_KEY = "@projectile_simulator/history"
